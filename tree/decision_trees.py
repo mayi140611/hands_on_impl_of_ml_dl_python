@@ -6,7 +6,7 @@
 @file: decision_trees.py
 @time: 2019-11-26 15:36
 """
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 import numpy as np
 from numpy import ndarray
 
@@ -186,8 +186,6 @@ class _DecisionTreeBase:
         que = [(self.depth + 1, self.root, data, label)]
         # Update tree depth and rules.
         self.depth = self._build_tree(que, max_depth, min_samples_split, label)
-        print(self.depth)
-        # self.get_rules()
 
     def predict_one(self, row: ndarray) -> float:
         """Auxiliary function of predict.
