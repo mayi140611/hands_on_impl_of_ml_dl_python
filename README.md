@@ -4,6 +4,7 @@
 ## Dir Tree
 * tree
     * decision_trees.py
+        * RegressionTree
 
 
 ## Reference
