@@ -6,5 +6,5 @@
 
 
 ## Reference
-https://github.com/RRdmlearning/Machine-Learning-From-Scratch
-https://github.com/tushushu/imylu
+* https://github.com/RRdmlearning/Machine-Learning-From-Scratch
+* https://github.com/tushushu/imylu
