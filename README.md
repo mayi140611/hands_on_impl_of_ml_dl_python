@@ -5,7 +5,7 @@
 * tree
     * decision_trees.py
         * RegressionTree
-
+    * gbdt.py
 
 ## Reference
 * https://github.com/RRdmlearning/Machine-Learning-From-Scratch
