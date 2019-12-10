@@ -15,6 +15,9 @@ class Loss(object):
 
 
 class SquareLoss(Loss):
+    """二次代价函数
+    如果激活函数是线性（如Relu）的，那么二次代价函数就是一种合适的选择
+    """
     def __init__(self): pass
 
     def loss(self, y, y_pred):
@@ -25,6 +28,9 @@ class SquareLoss(Loss):
 
 
 class CrossEntropy(Loss):
+    """交叉熵代价函数
+    如果激活函数是Sigmoid函数，那么比较合适用交叉熵代价函数
+    """
     def __init__(self): pass
 
     def loss(self, y, p):
@@ -39,8 +45,3 @@ class CrossEntropy(Loss):
         # Avoid division by zero
         p = np.clip(p, 1e-15, 1 - 1e-15)
         return - (y / p) + (1 - y) / (1 - p)
-
-
-class SoftMaxLoss(Loss):
-    def gradient(self, y, p):
-        return y - p
