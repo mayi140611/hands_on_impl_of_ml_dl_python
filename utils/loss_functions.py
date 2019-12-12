@@ -3,45 +3,38 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 
 
-class Loss(object):
-    def loss(self, y_true, y_pred):
-        return NotImplementedError()
-
-    def gradient(self, y, y_pred):
-        raise NotImplementedError()
-
-    def acc(self, y, y_pred):
-        return 0
-
-
-class SquareLoss(Loss):
-    """二次代价函数
-    如果激活函数是线性（如Relu）的，那么二次代价函数就是一种合适的选择
+def square_loss(y_true, y_hat):
     """
-    def __init__(self): pass
-
-    def loss(self, y, y_pred):
-        return 0.5 * np.power((y - y_pred), 2)
-
-    def gradient(self, y, y_pred):
-        return -(y - y_pred)
-
-
-class CrossEntropy(Loss):
-    """交叉熵代价函数
-    如果激活函数是Sigmoid函数，那么比较合适用交叉熵代价函数
+    回归问题的loss function
+    每一个样本的预测值用一个标量表示
+    :param y_true: np.array([0.2,0.6,0.8])
+    :param y_hat: np.array([0.18, 0.5, 0.7])
+    :return:
     """
-    def __init__(self): pass
+    return 0.5 * np.mean(np.power((y_true - y_hat), 2))
 
-    def loss(self, y, p):
-        # Avoid division by zero
-        p = np.clip(p, 1e-15, 1 - 1e-15)
-        return - y * np.log(p) - (1 - y) * np.log(1 - p)
 
-    def acc(self, y, p):
-        return accuracy_score(np.argmax(y, axis=1), np.argmax(p, axis=1))
+def log_loss_binary(y_true, y_hat):
+    """
+    二分类loss function. 每一个样本的预测值用一个标量表示
+    :param y_true: np.array([1, 0, 1])
+    :param y_hat: np.array([0.18, 0.5, 0.7])
+    :return:
+    """
+    # Avoid division by zero
+    y_hat = np.clip(y_hat, 1e-15, 1 - 1e-15)
+    return - y_true * np.log(y_hat) - (1 - y_true) * np.log(1 - y_hat)
 
-    def gradient(self, y, p):
-        # Avoid division by zero
-        p = np.clip(p, 1e-15, 1 - 1e-15)
-        return - (y / p) + (1 - y) / (1 - p)
+
+def cross_entropy_loss(y_true, y_hat):
+    """
+    multi分类loss function. 每一个样本的预测值用一个one-hot vector表示
+    :param y_true: np.array([(1, 0, 0), (1, 0, 0), (1, 0, 0)])
+    :param y_hat: np.array([(0.18, 0.5, 0.7), (0.18, 0.5, 0.7),(0.18, 0.5, 0.7),])
+    :return:
+    """
+    # Avoid division by zero
+    y_hat = np.clip(y_hat, 1e-15, 1 - 1e-15)
+    # 注意计算是由于-y_true * np.log(y_hat) element-wise，
+    # 每一行只有一个值非0，所以按照cross_entropy_loss有两个\sum，可以合并成1个
+    return np.sum(-y_true * np.log(y_hat))/len(y_true)
